@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Surya Pratap Singh — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f7f5f2; --ink: #1a1814; --muted: #7a7570;
+      --accent: #c5652a; --accent2: #2a7ac5;
+      --line: #e0dbd4; --card: #ffffff; --radius: 4px;
+      --font-d: 'Cormorant Garamond', serif;
+      --font-b: 'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--font-b); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--line); }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 5vw;
+      background: rgba(247,245,242,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { font-family: var(--font-d); font-size: 1.4rem; font-weight: 500; color: var(--ink); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.25s; }
+    .nav-links a:hover { color: var(--accent); }
+    .burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .burger span { display: block; width: 22px; height: 1.5px; background: var(--ink); }
+    .nav-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 220px;
+      background: var(--card); border-left: 1px solid var(--line);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      gap: 2.5rem; transform: translateX(100%); transition: transform 0.35s ease; z-index: 99;
+    }
+    .nav-drawer.open { transform: translateX(0); }
+    .nav-drawer a { text-decoration: none; color: var(--ink); font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* SECTIONS */
+    section { padding: 7rem 5vw; }
+    .s-label { display: block; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+    .s-title { font-family: var(--font-d); font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.15; margin-bottom: 3rem; }
+
+    /* HERO */
+    #home { min-height: 100vh; display: flex; align-items: center; padding: 6rem 5vw 4rem; position: relative; overflow: hidden; }
+    .hero-inner { max-width: 780px; position: relative; z-index: 2; }
+    .hero-top { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .avatar-wrap {
+      width: 82px; height: 82px; border-radius: 50%; flex-shrink: 0;
+      background: var(--line); border: 2px dashed #ccc;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .avatar-wrap img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+    .avatar-initial { font-family: var(--font-d); font-size: 2rem; color: var(--muted); }
+    .avatar-hint { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: 0.58rem; color: var(--muted); white-space: nowrap; }
+    .hero-name { font-family: var(--font-d); font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 300; line-height: 1.05; letter-spacing: -0.02em; }
+    .hero-name em { font-style: italic; color: var(--accent); }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--ink); color: var(--bg); border: none; padding: 0.75rem 1.8rem; font-family: var(--font-b); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border-radius: var(--radius); transition: background 0.25s, transform 0.2s; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+    .btn-secondary { background: transparent; color: var(--ink); border: 1.5px solid var(--line); padding: 0.75rem 1.8rem; font-family: var(--font-b); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border-radius: var(--radius); transition: border-color 0.25s, color 0.25s, transform 0.2s; text-decoration: none; display: inline-block; }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    .hero-bg-text { position: absolute; right: -3vw; top: 50%; transform: translateY(-50%); font-family: var(--font-d); font-size: clamp(6rem, 18vw, 16rem); font-weight: 300; color: transparent; -webkit-text-stroke: 1px var(--line); pointer-events: none; user-select: none; white-space: nowrap; z-index: 1; }
+    .scroll-hint { position: absolute; bottom: 2.5rem; left: 5vw; display: flex; align-items: center; gap: 0.7rem; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .scroll-hint::before { content:''; display:block; width:28px; height:1px; background:var(--muted); }
+
+    /* PROJECTS */
+    #projects { background: var(--bg); }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; max-width: 1100px; margin-bottom: 2rem; }
+    .proj-card { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--card); transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; }
+    .proj-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(26,24,20,0.09); border-color: var(--accent); }
+    .card-img { height: 170px; background: var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--muted); position: relative; overflow: hidden; }
+    .card-img img { width:100%; height:100%; object-fit:cover; transition: transform 0.4s; }
+    .proj-card:hover .card-img img { transform: scale(1.04); }
+    .card-img-icon { font-size: 2rem; }
+    .card-img-text { font-size: 0.72rem; letter-spacing: 0.06em; }
+    .coming-badge { position: absolute; top: 0.75rem; right: 0.75rem; background: var(--accent); color: #fff; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 2px; }
+    .card-body { padding: 1.4rem; }
+    .card-title { font-family: var(--font-d); font-size: 1.25rem; font-weight: 500; margin-bottom: 0.5rem; }
+    .card-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.6; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
+    .card-tag { font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--line); padding: 0.2rem 0.55rem; color: var(--muted); border-radius: 2px; }
+    .card-links { display: flex; gap: 1rem; }
+    .card-link { font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 1px; transition: color 0.2s, border-color 0.2s; }
+    .card-link:hover { color: var(--accent); border-color: var(--accent); }
+    .card-link.disabled { color: var(--muted); border-color: var(--line); pointer-events: none; }
+
+    /* CERTIFICATES */
+    #certificates { background: var(--card); }
+    .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; max-width: 1100px; margin-bottom: 2rem; }
+    .cert-card { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--bg); transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; }
+    .cert-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(26,24,20,0.09); border-color: var(--accent2); }
+    .cert-img { height: 140px; background: linear-gradient(135deg, #e8f0f8, #f0e8e0); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--muted); }
+    .cert-img img { width:100%; height:100%; object-fit:cover; }
+    .cert-img-icon { font-size: 2rem; }
+    .cert-img-text { font-size: 0.7rem; letter-spacing: 0.05em; text-align: center; padding: 0 1rem; }
+    .cert-body { padding: 1.2rem; }
+    .cert-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .cert-issuer { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); }
+    .cert-date { font-size: 0.68rem; color: var(--muted); }
+    .cert-name { font-family: var(--font-d); font-size: 1.15rem; font-weight: 500; margin-bottom: 1rem; }
+    .cert-link { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 1px; transition: color 0.2s, border-color 0.2s; }
+    .cert-link:hover { color: var(--accent2); border-color: var(--accent2); }
+    .cert-link.disabled { color: var(--muted); border-color: var(--line); pointer-events: none; }
+
+    /* EDIT HINT */
+    .edit-hint { font-size: 0.78rem; color: var(--muted); border: 1px dashed var(--line); padding: 0.8rem 1.2rem; border-radius: var(--radius); display: inline-block; margin-top: 0.5rem; }
+    .edit-hint code { background: var(--line); padding: 0.1rem 0.4rem; border-radius: 2px; font-size: 0.72rem; }
+
+    /* CONTACT */
+    #contact { background: var(--ink); color: var(--bg); }
+    #contact .s-label { color: var(--accent); }
+    #contact .s-title { color: var(--bg); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; max-width: 1000px; align-items: start; }
+    .contact-intro { font-size: 1rem; color: rgba(247,245,242,0.55); margin-bottom: 2rem; }
+    .contact-email-label { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; display: block; }
+    .contact-email { font-family: var(--font-d); font-size: 1.2rem; color: var(--bg); text-decoration: none; border-bottom: 1px solid rgba(247,245,242,0.2); padding-bottom: 2px; transition: color 0.2s; display: inline-block; margin-bottom: 2.5rem; }
+    .contact-email:hover { color: var(--accent); }
+    .socials { display: flex; flex-direction: column; gap: 0.9rem; }
+    .social-link { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: rgba(247,245,242,0.6); font-size: 0.85rem; transition: color 0.2s; }
+    .social-link:hover { color: var(--bg); }
+    .social-icon { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(247,245,242,0.2); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; transition: border-color 0.2s; }
+    .social-link:hover .social-icon { border-color: var(--accent); }
+    .contact-form { display: flex; flex-direction: column; gap: 1.3rem; }
+    .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-field label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(247,245,242,0.45); }
+    .form-field input, .form-field textarea { background: rgba(255,255,255,0.06); border: 1px solid rgba(247,245,242,0.14); color: var(--bg); padding: 0.75rem 1rem; font-family: var(--font-b); font-size: 0.9rem; font-weight: 300; border-radius: var(--radius); outline: none; resize: vertical; transition: border-color 0.25s; }
+    .form-field input:focus, .form-field textarea:focus { border-color: var(--accent); }
+    .form-field input::placeholder, .form-field textarea::placeholder { color: rgba(247,245,242,0.22); }
+    .form-submit { background: var(--accent); color: #fff; border: none; padding: 0.85rem 2rem; font-family: var(--font-b); font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-radius: var(--radius); align-self: flex-start; transition: background 0.25s, transform 0.2s; }
+    .form-submit:hover { background: #a8541f; transform: translateY(-2px); }
+    .form-success { padding: 1.2rem; border: 1px solid rgba(197,101,42,0.4); color: var(--accent); font-size: 0.9rem; border-radius: var(--radius); }
+
+    /* FOOTER */
+    footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.07); padding: 1.4rem 5vw; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+    footer p { font-size: 0.72rem; color: rgba(247,245,242,0.3); }
+
+    /* RESPONSIVE */
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+      .burger { display: flex; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-bg-text { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a class="nav-logo" href="#home">S.P. Singh</a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#certificates">Certificates</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="burger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="nav-drawer" id="drawer">
+    <a href="#home"         onclick="closeMenu()">Home</a>
+    <a href="#projects"     onclick="closeMenu()">Projects</a>
+    <a href="#certificates" onclick="closeMenu()">Certificates</a>
+    <a href="#contact"      onclick="closeMenu()">Contact</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="home">
+    <div class="hero-inner">
+      <div class="hero-top">
+        <!-- To add your photo: replace the avatar-wrap div with <img src="profile.jpg" style="width:82px;height:82px;border-radius:50%;object-fit:cover"> -->
+        <div class="avatar-wrap">
+          <span class="avatar-initial">S</span>
+          <span class="avatar-hint">Add profile.jpg</span>
+        </div>
+        <h1 class="hero-name">Surya Pratap <em>Singh</em></h1>
+      </div>
+      <div class="hero-btns">
+        <a class="btn-primary" href="#projects">View Projects →</a>
+        <a class="btn-secondary" href="#contact">Contact Me</a>
+      </div>
+    </div>
+    <div class="hero-bg-text" aria-hidden="true">ENGINEER</div>
+    <div class="scroll-hint">Scroll to explore</div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <span class="s-label">01 — Projects</span>
+    <h2 class="s-title">Things I'm building<br>&amp; will build.</h2>
+    <div class="cards-grid">
+
+      <!-- Project Card 1 — replace with your real project -->
+      <div class="proj-card">
+        <div class="card-img">
+          <!-- To add image: delete the 2 spans below and add: <img src="project1.jpg" alt="Project"> -->
+          <span class="card-img-icon">📁</span>
+          <span class="card-img-text">Screenshot coming soon</span>
+          <span class="coming-badge">Coming Soon</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">My First Project</h3>
+          <p class="card-desc">Description of what this project is about. Replace with your real project details.</p>
+          <div class="card-tags"><span class="card-tag">Engineering</span></div>
+          <div class="card-links">
+            <a class="card-link disabled" href="#">GitHub ↗</a>
+            <a class="card-link disabled" href="#">Live Demo ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project Card 2 -->
+      <div class="proj-card">
+        <div class="card-img">
+          <span class="card-img-icon">📁</span>
+          <span class="card-img-text">Screenshot coming soon</span>
+          <span class="coming-badge">Coming Soon</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">CAD Design Project</h3>
+          <p class="card-desc">A CAD model or structural drawing I'm working on. Details added once complete.</p>
+          <div class="card-tags"><span class="card-tag">AutoCAD</span><span class="card-tag">Civil</span></div>
+          <div class="card-links">
+            <a class="card-link disabled" href="#">GitHub ↗</a>
+            <a class="card-link disabled" href="#">Live Demo ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project Card 3 -->
+      <div class="proj-card">
+        <div class="card-img">
+          <span class="card-img-icon">📁</span>
+          <span class="card-img-text">Screenshot coming soon</span>
+          <span class="coming-badge">Coming Soon</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Mini Build Project</h3>
+          <p class="card-desc">A hands-on mini project — from an idea to a real build. More details coming soon.</p>
+          <div class="card-tags"><span class="card-tag">DIY</span><span class="card-tag">Mechanical</span></div>
+          <div class="card-links">
+            <a class="card-link disabled" href="#">GitHub ↗</a>
+            <a class="card-link disabled" href="#">Live Demo ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project Card 4 -->
+      <div class="proj-card">
+        <div class="card-img">
+          <span class="card-img-icon">📁</span>
+          <span class="card-img-text">Screenshot coming soon</span>
+          <span class="coming-badge">Coming Soon</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">More Coming Soon</h3>
+          <p class="card-desc">More exciting projects on the way as I keep learning and building things.</p>
+          <div class="card-tags"><span class="card-tag">TBD</span></div>
+          <div class="card-links">
+            <a class="card-link disabled" href="#">GitHub ↗</a>
+            <a class="card-link disabled" href="#">Live Demo ↗</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="edit-hint">💡 To add a real project: find a card above and replace the title, description, tags &amp; links.</p>
+  </section>
+
+  <!-- CERTIFICATES -->
+  <section id="certificates">
+    <span class="s-label">02 — Certificates</span>
+    <h2 class="s-title">Courses &amp; certifications<br>I'll earn along the way.</h2>
+    <div class="cert-grid">
+
+      <!-- Cert 1 — replace with your real certificate -->
+      <div class="cert-card">
+        <div class="cert-img">
+          <!-- To add image: delete the 2 spans below and add: <img src="cert1.jpg" alt="Certificate"> -->
+          <span class="cert-img-icon">🎓</span>
+          <span class="cert-img-text">Certificate image coming soon</span>
+        </div>
+        <div class="cert-body">
+          <div class="cert-meta">
+            <span class="cert-issuer">Platform / Institution</span>
+            <span class="cert-date">2025</span>
+          </div>
+          <h3 class="cert-name">Certificate Name</h3>
+          <a class="cert-link disabled" href="#">View Certificate ↗</a>
+        </div>
+      </div>
+
+      <!-- Cert 2 -->
+      <div class="cert-card">
+        <div class="cert-img">
+          <span class="cert-img-icon">🎓</span>
+          <span class="cert-img-text">Certificate image coming soon</span>
+        </div>
+        <div class="cert-body">
+          <div class="cert-meta">
+            <span class="cert-issuer">Platform / Institution</span>
+            <span class="cert-date">2025</span>
+          </div>
+          <h3 class="cert-name">Certificate Name</h3>
+          <a class="cert-link disabled" href="#">View Certificate ↗</a>
+        </div>
+      </div>
+
+      <!-- Cert 3 -->
+      <div class="cert-card">
+        <div class="cert-img">
+          <span class="cert-img-icon">🎓</span>
+          <span class="cert-img-text">Certificate image coming soon</span>
+        </div>
+        <div class="cert-body">
+          <div class="cert-meta">
+            <span class="cert-issuer">Platform / Institution</span>
+            <span class="cert-date">2025</span>
+          </div>
+          <h3 class="cert-name">Certificate Name</h3>
+          <a class="cert-link disabled" href="#">View Certificate ↗</a>
+        </div>
+      </div>
+
+      <!-- Cert 4 -->
+      <div class="cert-card">
+        <div class="cert-img">
+          <span class="cert-img-icon">🎓</span>
+          <span class="cert-img-text">Certificate image coming soon</span>
+        </div>
+        <div class="cert-body">
+          <div class="cert-meta">
+            <span class="cert-issuer">Platform / Institution</span>
+            <span class="cert-date">2025</span>
+          </div>
+          <h3 class="cert-name">Certificate Name</h3>
+          <a class="cert-link disabled" href="#">View Certificate ↗</a>
+        </div>
+      </div>
+
+    </div>
+    <p class="edit-hint">💡 To add a real certificate: find a card above and replace the name, issuer, date &amp; link.</p>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <span class="s-label">03 — Contact</span>
+    <h2 class="s-title">Let's connect.</h2>
+    <div class="contact-grid">
+      <div>
+        <p class="contact-intro">Always open to learning from others, talking about engineering, or just saying hi!</p>
+        <span class="contact-email-label">Email</span>
+        <a class="contact-email" href="mailto:your@email.com">your@email.com</a>
+        <div class="socials">
+          <a class="social-link" href="https://github.com/suryapratapsingh7382" target="_blank">
+            <span class="social-icon">GH</span> GitHub
+          </a>
+          <a class="social-link" href="#" target="_blank">
+            <span class="social-icon">in</span> LinkedIn
+          </a>
+          <a class="social-link" href="#" target="_blank">
+            <span class="social-icon">𝕏</span> Twitter / X
+          </a>
+        </div>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <div id="formSuccess" class="form-success" style="display:none;">✓ Opening your email client — thanks for reaching out!</div>
+        <div class="form-field">
+          <label for="fname">Your Name</label>
+          <input id="fname" type="text" placeholder="e.g. Rahul Sharma" required />
+        </div>
+        <div class="form-field">
+          <label for="femail">Your Email</label>
+          <input id="femail" type="email" placeholder="rahul@email.com" required />
+        </div>
+        <div class="form-field">
+          <label for="fmsg">Message</label>
+          <textarea id="fmsg" rows="4" placeholder="Hey Surya, I wanted to..." required></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Message →</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Surya Pratap Singh</p>
+    <p>Built with curiosity &amp; plain HTML</p>
+  </footer>
+
+  <script>
+    function toggleMenu() { document.getElementById('drawer').classList.toggle('open'); }
+    function closeMenu()  { document.getElementById('drawer').classList.remove('open'); }
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name    = document.getElementById('fname').value;
+      const email   = document.getElementById('femail').value;
+      const message = document.getElementById('fmsg').value;
+      window.location.href = `mailto:your@email.com?subject=Message from ${encodeURIComponent(name)}&body=${encodeURIComponent(message)}%0A%0AFrom: ${encodeURIComponent(email)}`;
+      document.getElementById('formSuccess').style.display = 'block';
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>
